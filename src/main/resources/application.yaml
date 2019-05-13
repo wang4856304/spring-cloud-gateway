@@ -1,0 +1,57 @@
+server:
+   port: 9400
+logging:
+   config: classpath:log4j2.xml
+
+spring:
+#   cloud:
+#      gateway:
+#         routes:
+#            - id: user-service
+#              uri: lb://user-service
+#              predicates:
+#                 - Path=/user/**
+#              filters:
+#                 - StripPrefix=1
+#                 - name: RequestRateLimiter
+#                   args:
+#                      key-resolver: "#{@remoteAddrKeyResolver}"
+#                      redis-rate-limiter.replenishRate: 1
+#                      redis-rate-limiter.burstCapacity: 5
+   datasource:
+      hikari:
+         driver-class-name: net.sf.log4jdbc.DriverSpy
+         jdbc-url: jdbc:log4jdbc:mysql://127.0.0.1:3306/gateway?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+         username: root
+         password: root
+
+   #   cloud:
+#      consul:
+#        host: 192.168.0.112
+#        port: 8500
+#        discovery:
+#          register: false
+   jpa:
+      database: mysql
+      generate-ddl: false
+      hibernate:
+         ddl-auto: none
+         naming:
+            physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      show-sql: true
+
+
+   redis:
+      database: 0
+      host: 127.0.0.1
+      port: 6379
+      password:
+      timeout: 1000  # 连接超时时间（毫秒）
+
+
+#zuul:
+#  routes:
+#     api:
+#       path: /api/**
+#       #service-id: consul-miya
+#       url: http://localhost:9800
