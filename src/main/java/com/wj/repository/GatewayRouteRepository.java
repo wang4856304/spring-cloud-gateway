@@ -1,7 +1,10 @@
 package com.wj.repository;
 
 import com.wj.entity.GatewayRoute;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -14,4 +17,6 @@ import java.util.List;
  */
 public interface GatewayRouteRepository extends JpaRepository<GatewayRoute, String> {
     List<GatewayRoute> findAllByDeleteFlag(int deleteFlag);
+    Page<GatewayRoute> findAllByDeleteFlag(int deleteFlag, Pageable pageable);
+    List<GatewayRoute> findAllByIdAndDeleteFlag(String id, int deleteFlag, Pageable pageable);
 }

@@ -3,9 +3,12 @@ package com.wj.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.wj.pubsub.publish.impl.RedisPublish;
 import com.wj.pubsub.subscribe.Channel;
+import com.wj.service.GatewayRouteService;
 import com.wj.service.RefreshService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -18,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-public class RefreshController {
+public class GatewayRouteController {
 
     @Autowired
     private RefreshService refreshService;
@@ -26,13 +29,28 @@ public class RefreshController {
     @Autowired
     private RedisPublish redisPublish;
 
-    @RequestMapping("/refreshRoute")
+    @Autowired
+    private GatewayRouteService gatewayRouteService;
+
+    @GetMapping("/refreshRoute")
     public Object refreshRoute() {
         redisPublish.publish(Channel.REFRESH_ROUTE, "message1111111111111");
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", 0);
         jsonObject.put("msg", "success");
         return jsonObject;
+    }
+
+    @GetMapping(path = "/queryRoutes", produces = "application/json")
+    public Object queryRoutes(Integer pageNo, Integer pageSize) {
+
+        return gatewayRouteService.findAll(pageNo, pageSize);
+    }
+
+    @GetMapping("/queryRoutesById")
+    public Object queryRoutesById(@RequestParam String id, Integer pageNo, Integer pageSize) {
+
+        return gatewayRouteService.findById(id, pageNo, pageSize);
     }
 
 }
