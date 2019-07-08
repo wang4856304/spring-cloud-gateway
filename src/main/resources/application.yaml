@@ -4,7 +4,9 @@ logging:
    config: classpath:log4j2.xml
 
 spring:
-#   cloud:
+   application:
+      name: gateway
+   #   cloud:
 #      gateway:
 #         routes:
 #            - id: user-service

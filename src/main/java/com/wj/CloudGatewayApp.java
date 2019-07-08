@@ -11,6 +11,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.filter.NettyWriteResponseFilter;
 import org.springframework.cloud.gateway.filter.factory.RequestRateLimiterGatewayFilterFactory;
+import org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping;
 import org.springframework.cloud.gateway.handler.predicate.RoutePredicateFactory;
 import org.springframework.cloud.gateway.route.CompositeRouteDefinitionLocator;
 import org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator;
@@ -37,6 +38,7 @@ public class CloudGatewayApp {
         SpringApplication.run(CloudGatewayApp.class, args);
         //RouteDefinitionRouteLocator
         //RequestRateLimiterGatewayFilterFactory
+        //RoutePredicateHandlerMapping
         //GatewayFilter
         //Ordered
         //GlobalFilter

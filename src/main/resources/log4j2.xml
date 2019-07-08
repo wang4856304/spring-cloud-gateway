@@ -6,7 +6,7 @@
     <appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <!--<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>-->
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+            <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss,SSS} [%thread]  %-5level [%X{X-B3-TraceId},%X{X-B3-SpanId},%X{X-B3-ParentSpanId},%X{X-Span-Export}] %class{36} %L %M - %msg%xEx%n"/>
         </Console>
 
         <!-- adminFile -->
@@ -15,7 +15,7 @@
             <Filters>
                 <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
-            <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss,SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+            <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss,SSS} [%thread] %-5level [%X{X-B3-TraceId},%X{X-B3-SpanId},%X{X-B3-ParentSpanId},%X{X-Span-Export}] %class{36} %L %M - %msg%xEx%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
                 <SizeBasedTriggeringPolicy size="1024 MB"/>
@@ -27,7 +27,7 @@
                 <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
                 <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
-            <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss,SSS} %-5level %l %C{36} %L %M - %m%xEx%n"/>
+            <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss,SSS} %-5level [%X{X-B3-TraceId},%X{X-B3-SpanId},%X{X-B3-ParentSpanId},%X{X-Span-Export}] %l %C{36} %L %M - %m%xEx%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
                 <SizeBasedTriggeringPolicy size="1024 MB"/>
@@ -38,23 +38,33 @@
             <Filters>
                 <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
-            <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss,SSS} %-5level %l %C{36} %L %M - %m%xEx%n"/>
+            <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss,SSS} %-5level [%X{X-B3-TraceId},%X{X-B3-SpanId},%X{X-B3-ParentSpanId},%X{X-Span-Export}] %l %C{36} %L %M - %m%xEx%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
                 <SizeBasedTriggeringPolicy size="1024 MB"/>
             </Policies>
         </RollingFile>
 
+        <RollingFile name="loggingFilter" fileName="${logDir}/loggingFilter.log"
+                     filePattern="${logDir}/$${date:yyyy-MM}/admin.%d{yyyy-MM-dd}.loggingFilter.log">
+            <PatternLayout pattern="%m%xEx%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="1024 MB"/>
+            </Policies>
+        </RollingFile>
     </appenders>
+
     <loggers>
+        <logger name="loggingFilter" level="info" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="loggingFilter"/>
+        </logger>
         <logger name="admin" level="debug" additivity="false">
             <appender-ref ref="Console"/>
             <appender-ref ref="info"/>
             <appender-ref ref="warn"/>
             <appender-ref ref="error"/>
-        </logger>
-        <logger name="com.caiqr.admin.dao" level="debug" additivity="false">
-            <appender-ref ref="Console"/>
         </logger>
         <logger name="org.springframework.cloud.gateway" level="debug">
             <appender-ref ref="Console"/>
