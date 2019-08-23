@@ -3,9 +3,13 @@ server:
 logging:
    config: classpath:log4j2.xml
 
-hibernate:
-   dialect:
-      storage_engine: innodb
+
+eureka:
+   client:
+      service-url:
+         defaultZone: http://localhost:9320/eureka
+      register-with-eureka: true #是否注册到注册中心
+      fetch-registry: true #本地缓存服务
 
 spring:
    application:
@@ -54,23 +58,9 @@ spring:
       port: 6379
       password:
       timeout: 1000  # 连接超时时间（毫秒）
-
-security:
-   #   basic:
-   #      enabled: false
-   oauth2:
-      client:
-         access-token-uri: http://localhost:9920/oauth/token
-         user-authorization-uri: http://localhost:9920/oauth/authorize
-         authorities: oauth2
-         grant-type: password
-         client-secret: 123456
-         client-id: client_2
-      resource:
-         token-info-uri: http://localhost:9920/oauth/check_token
-         user-info-uri: http://localhost:9920/uaa/user
-         prefer-token-info: true #false使用user-info-uri，true使用token-info-uri
-         id: order
+token:
+  check-token-url: http://localhost:9920/uaa/checkToken
+  create-token-url: http://localhost:9920/oauth/token
 
 #zuul:
 #  routes:
