@@ -45,6 +45,7 @@ public class CloudGatewayApp {
         List<String> list = new LinkedList<>();
         list.add("");
         //NettyWriteResponseFilter
+        System.setProperty("hibernate.dialect.storage_engine", "innodb");
     }
 
     /*@Bean

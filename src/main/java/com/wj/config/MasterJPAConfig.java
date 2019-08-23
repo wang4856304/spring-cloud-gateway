@@ -1,8 +1,9 @@
 package com.wj.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -29,6 +30,9 @@ import javax.sql.DataSource;
         basePackages= { "com.wj.repository" }) //设置Repository所在位置
 public class MasterJPAConfig {
 
+    @Autowired
+    private JpaProperties jpaProperties;
+
     //@Primary //springboot默认是多数据源，所以你要指定一个主数据源，不然会错误
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource.hikari") //需要导入配置
@@ -45,8 +49,10 @@ public class MasterJPAConfig {
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(true);
+        vendorAdapter.setGenerateDdl(jpaProperties.isGenerateDdl());
         vendorAdapter.setDatabase(Database.MYSQL);//这里指定的你数据库的类型
+        vendorAdapter.setDatabasePlatform(jpaProperties.getDatabasePlatform());
+        vendorAdapter.setShowSql(jpaProperties.isShowSql());
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("com.wj.entity");//这个是你entity所在的包

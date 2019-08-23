@@ -36,7 +36,7 @@ public class MysqlRouteDefinitionRepository implements RouteDefinitionRepository
         Map<String, RouteDefinition> routes = new LinkedHashMap<>();
         for (GatewayRoute gatewayRoute: GatewayRouteList) {
             RouteDefinition definition = new RouteDefinition();
-            definition.setId(gatewayRoute.getId().toString());
+            definition.setId(gatewayRoute.getId());
             try {
                 definition.setUri(new URI(gatewayRoute.getUri()));
             }

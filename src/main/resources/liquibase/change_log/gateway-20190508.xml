@@ -16,4 +16,24 @@
             )ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_bin COMMENT = '路由表' ROW_FORMAT = Compact;
         </sql>
     </changeSet>
+
+    <changeSet id="s_resource_url" author="wangjun">
+        <sql>
+            CREATE TABLE `s_resource_url` (
+            `RESOURCE_ID` varchar(64) NOT NULL,
+            `PARENT_RESOURCE_ID` varchar(64) NOT NULL COMMENT '访问URL关联的资源id(即这个URL属于那个资源下边的)',
+            `RESOURCE_TYPE` tinyint(2) NOT NULL DEFAULT '0' COMMENT '资源类型：-1.游客资源 0.私有资源',
+            `RESOURCE_NAME` varchar(255) DEFAULT '' COMMENT 'URL资源名称',
+            `URL` varchar(300) NOT NULL COMMENT '后台接口URL地址',
+            `METHOD` varchar(10) DEFAULT '' COMMENT '接口访问方式例：GET,POST',
+            `REMARK` varchar(200) DEFAULT NULL,
+            `DELETE_FLAG` tinyint(2) NOT NULL DEFAULT '1' COMMENT '是否删除,0:未删除,1:已删除',
+            `CREATE_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `UPDATE_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (`RESOURCE_ID`),
+            KEY `rId_rType_index` (`RESOURCE_TYPE`, `PARENT_RESOURCE_ID`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE = utf8_bin COMMENT = 'url表' ROW_FORMAT = Compact;
+
+        </sql>
+    </changeSet>
 </databaseChangeLog>
