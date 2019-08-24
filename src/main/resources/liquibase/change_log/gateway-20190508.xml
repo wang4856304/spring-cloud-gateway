@@ -6,7 +6,7 @@
     <changeSet id="gateway_route" author="wangjun">
         <sql>
             create table gateway_route(
-            `ID` varchar(64) not null primary key comment'主键',
+            `ID` bigint not null primary key auto_increment comment'主键',
             `PREDICATES` varchar(256) not null comment '匹配路径',
             `URI` varchar(256) not null comment '转发的服务地址',
             `FILTERS` varchar(256) default '' comment '过滤器',
@@ -27,7 +27,7 @@
             `URL` varchar(300) NOT NULL COMMENT '后台接口URL地址',
             `METHOD` varchar(10) DEFAULT '' COMMENT '接口访问方式例：GET,POST',
             `REMARK` varchar(200) DEFAULT NULL,
-            `DELETE_FLAG` tinyint(2) NOT NULL DEFAULT '1' COMMENT '是否删除,0:未删除,1:已删除',
+            `DELETE_FLAG` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否删除,0:未删除,1:已删除',
             `CREATE_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             `UPDATE_AT` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (`RESOURCE_ID`),

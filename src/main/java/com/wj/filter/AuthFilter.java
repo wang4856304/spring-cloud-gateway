@@ -55,13 +55,20 @@ public class AuthFilter implements GlobalFilter, Ordered {
         List<ResourceURL> openResourceUrlList = redisService.get(ResourceUrlServiceImpl.OPEN_RESOURCE_URL_KEY);
         List<ResourceURL> privateResourceUrlList = redisService.get(ResourceUrlServiceImpl.PRIVATE_RESOURCE_URL_KEY);
         List<ResourceURL> allResourceList = new ArrayList<>();
-        allResourceList.addAll(openResourceUrlList);
-        allResourceList.addAll(privateResourceUrlList);
+        if (openResourceUrlList != null) {
+            allResourceList.addAll(openResourceUrlList);
+        }
+        if (privateResourceUrlList != null) {
+            allResourceList.addAll(privateResourceUrlList);
+        }
         AntPathMatcher antPathMatcher = new AntPathMatcher();
         antPathMatcher.setCaseSensitive(false);
         boolean exists = allResourceList.stream().anyMatch(resourceURL ->antPathMatcher.match(resourceURL.getUrl(), url) && checkMethod(exchange, resourceURL.getMethod()));
         if (!exists) {
             throw new  RuntimeException("path not found");
+        }
+        if (privateResourceUrlList == null) {
+            return;
         }
         boolean privatePass = privateResourceUrlList.stream().anyMatch(resourceURL ->antPathMatcher.match(resourceURL.getUrl(), url));
         if (privatePass) {
@@ -111,6 +118,6 @@ public class AuthFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        return 2;
     }
 }

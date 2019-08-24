@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/url")
+@RequestMapping("api/url")
 public class ResourceUrlController {
 
 

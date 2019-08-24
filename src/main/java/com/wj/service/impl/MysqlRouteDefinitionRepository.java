@@ -1,5 +1,7 @@
 package com.wj.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.wj.entity.GatewayRoute;
 import com.wj.service.GatewayRouteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +39,7 @@ public class MysqlRouteDefinitionRepository implements RouteDefinitionRepository
         Map<String, RouteDefinition> routes = new LinkedHashMap<>();
         for (GatewayRoute gatewayRoute: GatewayRouteList) {
             RouteDefinition definition = new RouteDefinition();
-            definition.setId(gatewayRoute.getId());
+            definition.setId(String.valueOf(gatewayRoute.getId()));
             try {
                 definition.setUri(new URI(gatewayRoute.getUri()));
             }

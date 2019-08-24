@@ -1,6 +1,9 @@
 package com.wj.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.wj.entity.GatewayRoute;
+import com.wj.entity.Response;
+import com.wj.entity.dto.GatewayRouteDto;
 import com.wj.pubsub.publish.impl.RedisPublish;
 import com.wj.pubsub.subscribe.Channel;
 import com.wj.service.GatewayRouteService;
@@ -8,10 +11,12 @@ import com.wj.service.RefreshService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author jun.wang
@@ -23,7 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-public class GatewayRouteController {
+@Validated
+public class GatewayRouteController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(GatewayRouteController.class);
 
@@ -58,4 +64,10 @@ public class GatewayRouteController {
         return gatewayRouteService.findById(id, pageNo, pageSize);
     }
 
+    @PostMapping("/saveGatewayRoute")
+    public ResponseEntity<Response> saveGatewayRoute(@RequestBody List<@Valid GatewayRouteDto> gatewayRouteList) {
+        gatewayRouteService.saveGatewayRoute(gatewayRouteList);
+        Response response = new Response();
+        return ResponseEntity.ok((Response)buildSuccessResponse(response));
+    }
 }

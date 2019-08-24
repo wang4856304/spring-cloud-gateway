@@ -1,6 +1,7 @@
 package com.wj.service;
 
 import com.wj.entity.GatewayRoute;
+import com.wj.entity.dto.GatewayRouteDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface GatewayRouteService {
     List<GatewayRoute> findAll();
     Page<GatewayRoute> findAll(Integer pageNo, Integer pageSize);
     List<GatewayRoute> findById(String id, Integer pageNo, Integer pageSize);
+    int saveGatewayRoute(List<GatewayRouteDto> gatewayRouteList);
 }

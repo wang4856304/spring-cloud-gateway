@@ -8,8 +8,8 @@ eureka:
    client:
       service-url:
          defaultZone: http://localhost:9320/eureka
-      register-with-eureka: true #是否注册到注册中心
-      fetch-registry: true #本地缓存服务
+      register-with-eureka: false #是否注册到注册中心
+      fetch-registry: false #本地缓存服务
 
 spring:
    application:
@@ -33,7 +33,7 @@ spring:
          driver-class-name: net.sf.log4jdbc.DriverSpy
          jdbc-url: jdbc:log4jdbc:mysql://127.0.0.1:3306/gateway?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
          username: root
-         password: root
+         password: 123456
 
    #   cloud:
 #      consul:

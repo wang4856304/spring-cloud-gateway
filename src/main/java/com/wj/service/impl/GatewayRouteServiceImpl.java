@@ -1,6 +1,9 @@
 package com.wj.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.wj.entity.GatewayRoute;
+import com.wj.entity.dto.GatewayRouteDto;
 import com.wj.repository.GatewayRouteRepository;
 import com.wj.service.GatewayRouteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +14,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author jun.wang
@@ -53,6 +59,32 @@ public class GatewayRouteServiceImpl implements GatewayRouteService {
         }
         gatewayRouteRepository.findAll(pageable);
         return list;
+    }
+
+    @Override
+    public int saveGatewayRoute(List<GatewayRouteDto> gatewayRouteList) {
+        List<GatewayRoute> list = gatewayRouteRepository.saveAll(toGatewayRouteList(gatewayRouteList));
+        if (list != null) {
+            return list.size();
+        }
+        return 0;
+    }
+
+    private List<GatewayRoute> toGatewayRouteList(List<GatewayRouteDto> gatewayRouteList) {
+        return gatewayRouteList.stream().map(gatewayRouteDto -> {
+            GatewayRoute gatewayRoute = new GatewayRoute();
+            gatewayRoute.setUri(gatewayRouteDto.getUri());
+            JSONArray jsonArray = new JSONArray();
+            JSONObject predicatesJson = new JSONObject();
+            predicatesJson.put("name", "Path");
+            Map<String, String> predicateParams = new HashMap<>(8);
+            predicateParams.put("pattern", gatewayRouteDto.getPredicates());
+            predicatesJson.put("args", predicateParams);
+            jsonArray.add(predicatesJson);
+            gatewayRoute.setPredicates(jsonArray.toJSONString());
+            gatewayRoute.setFilters(gatewayRouteDto.getFilters());
+            return gatewayRoute;
+        }).collect(Collectors.toList());
     }
 
     private Pageable createPageable(Integer pageNo, Integer pageSize, Sort sort) {
