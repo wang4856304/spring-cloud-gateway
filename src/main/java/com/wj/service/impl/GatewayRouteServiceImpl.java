@@ -33,6 +33,8 @@ public class GatewayRouteServiceImpl implements GatewayRouteService {
     @Autowired
     private GatewayRouteRepository gatewayRouteRepository;
 
+    //{"name": "RequestRateLimiter", "args": {"key-resolver": "#{@remoteAddrKeyResolver}", "redis-rate-limiter.replenishRate": 1, "redis-rate-limiter.burstCapacity": 3}}
+
     @Override
     public List<GatewayRoute> findAll() {
         List<GatewayRoute> list = gatewayRouteRepository.findAllByDeleteFlag(0);

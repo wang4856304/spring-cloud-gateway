@@ -1,5 +1,8 @@
 server:
    port: 9400
+   servlet:
+      session:
+         timeout: 3600s  #session会话过期时间
 logging:
    config: classpath:log4j2.xml
 
@@ -33,7 +36,7 @@ spring:
          driver-class-name: net.sf.log4jdbc.DriverSpy
          jdbc-url: jdbc:log4jdbc:mysql://127.0.0.1:3306/gateway?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
          username: root
-         password: 123456
+         password: root
 
    #   cloud:
 #      consul:
@@ -58,6 +61,8 @@ spring:
       port: 6379
       password:
       timeout: 1000  # 连接超时时间（毫秒）
+   session:
+      store-type: redis
 token:
   check-token-url: http://localhost:9920/uaa/checkToken
   create-token-url: http://localhost:9920/oauth/token
